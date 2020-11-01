@@ -26,17 +26,15 @@ endif
 let s:upto = {}
 
 function! <SID>ScanFile(file, restart) " {{{
-	" NOTE: there are some options which can cause the screen to jump around a
-	" bit, we turn them off here
-	let l:old_scrolloff = &l:scrolloff
-	let l:old_sidescrolloff = &l:sidescrolloff
-	setglobal scrolloff=0
-	setglobal sidescrolloff=0
-
 	" we need to split to that file ... we do it vertically because it has a
 	" better chance of there being room
 	vsplit
 	execute 'view' a:file
+
+	" NOTE: there are some options which can cause the screen to jump around a
+	" bit, we turn them off here
+	setlocal scrolloff=0
+	setlocal sidescrolloff=0
 
 	" set hide mode to 'wipe' so that the file is wiped out when we're done ...
 	setlocal bufhidden=wipe
@@ -160,10 +158,6 @@ function! <SID>ScanFile(file, restart) " {{{
 
 	" we want to close the buffer now we're done reading it
 	quit
-
-	" we need to restore the values for scrolloff and friends ...
-	let &g:scrolloff = l:old_scrolloff
-	let &g:sidescrolloff = l:old_sidescrolloff
 endfunction " }}}
 
 command! -nargs=0 SpellCorrect call <SID>SpellCorrect()
